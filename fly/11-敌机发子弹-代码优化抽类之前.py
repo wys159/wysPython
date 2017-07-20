@@ -1,31 +1,19 @@
-#!/usr/bin/python
 # _*_ coding:utf-8 _*_
-
 import pygame
 import time
 from pygame.locals import *
 import random
 
 
-class Base(object):
-    """子弹飞机基类"""
-
-    def __init__(self, screen_temp, x, y, image_name):
-
-        self.x = x
-        self.y = y
+class HeroPlane():
+    def __init__(self, screen_temp):
+        self.x = 180
+        self.y = 600
         self.screen = screen_temp
-        self.image = pygame.image.load(image_name)
-
-
-class BasePlane(Base):
-    """飞机基类"""
-
-    def __init__(self, screen_temp, x, y, image_name):
-        Base.__init__(self, screen_temp, x, y, image_name)
+        self.image = pygame.image.load("./feiji/hero1.png")
         self.bullet_list = []  # 存储发射的子弹引用
+    # 显示飞机
 
-# 显示飞机
     def display(self):
         self.screen.blit(self.image, (self.x, self.y))
         # 调用子弹并显示
@@ -35,13 +23,6 @@ class BasePlane(Base):
             bullet.move()
             if bullet.judge():  # 判断子弹越界并删除
                 self.bullet_list.remove(bullet)
-
-
-class HeroPlane(BasePlane):
-    """飞机类"""
-
-    def __init__(self, screen_temp):
-        BasePlane.__init__(self, screen_temp, 180, 600, "./feiji/hero1.png")
 
     def move_left(self):
         self.x -= 10
@@ -54,12 +35,28 @@ class HeroPlane(BasePlane):
 # 显示敌机类
 
 
-class EnemyPlane(BasePlane):
+class EnemyPlane():
     """敌机类"""
 
     def __init__(self, screen_temp):
-        BasePlane.__init__(self, screen_temp, 0, 0, "./feiji/enemy0.png")
+        self.x = 0
+        self.y = 0
+        self.screen = screen_temp
+        self.image = pygame.image.load("./feiji/enemy0.png")
+        self.bullet_list = []  # 存储发射的子弹引用
         self.direnction = "right"  # 用来存储飞机默认的显示方向
+    # 显示飞机
+
+    def display(self):
+        self.screen.blit(self.image, (self.x, self.y))
+        # 调用子弹并显示
+        for bullet in self.bullet_list:
+            bullet.display()
+            # 子弹自己移动
+            bullet.move()
+
+            if bullet.judge():  # 判断子弹越界并删除
+                self.bullet_list.remove(bullet)
 
     def move(self):
         if self.direnction == "right":
@@ -74,29 +71,27 @@ class EnemyPlane(BasePlane):
 
     def fire(self):
         random_num = random.randint(1, 100)
-        if random_num == 8 or random_num == 20 or random_num == 60:
+        if random_num == 8 or random_num == 60:
             self.bullet_list.append(EnemyBullet(self.screen, self.x, self.y))
 
 
-class BaseBullet(Base):
-    """子弹基类"""
-    # 显示子弹
+class Bullet():
+    def __init__(self, screen_temp, x, y):
+
+        self.x = x + 40
+        self.y = y - 20
+        self.screen = screen_temp  # 窗口对象的引用
+        self.image = pygame.image.load("./feiji/bullet.png")
+        # 显示子弹
 
     def display(self):
         self.screen.blit(self.image, (self.x, self.y))
 
-
-class Bullet(BaseBullet):
-
-    def __init__(self, screen_temp, x, y):
-        BaseBullet.__init__(self, screen_temp, x + 40,
-                            y - 20, "./feiji/bullet.png")
-
     # 子弹自己动
     def move(self):
         self.y -= 5
+    # 判断子弹越界
 
-     # 判断子弹越界
     def judge(self):
         if self.y < 0:
             return True
@@ -104,11 +99,17 @@ class Bullet(BaseBullet):
             return False
 
 
-class EnemyBullet(BaseBullet):
-
+class EnemyBullet():
     def __init__(self, screen_temp, x, y):
-        BaseBullet.__init__(self, screen_temp, x + 25,
-                            y + 40, "./feiji/bullet1.png")
+
+        self.x = x + 25
+        self.y = y + 40
+        self.screen = screen_temp  # 窗口对象的引用
+        self.image = pygame.image.load("./feiji/bullet1.png")
+        # 显示子弹
+
+    def display(self):
+        self.screen.blit(self.image, (self.x, self.y))
 
     # 子弹自己动
     def move(self):
@@ -123,7 +124,7 @@ class EnemyBullet(BaseBullet):
 
 
 def Key_control(hero_temp):
-            # 判断是否是点击了退出按
+   # 判断是否是点击了退出按
     for event in pygame.event.get():
         # print(event.type)
         if event.type == QUIT:
@@ -169,6 +170,7 @@ def main():
         pygame.display.update()
         Key_control(hero)
         time.sleep(0.01)
+
 
 if __name__ == "__main__":
     main()
