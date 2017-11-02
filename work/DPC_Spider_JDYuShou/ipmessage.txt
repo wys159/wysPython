@@ -1,0 +1,2 @@
+ip:118.120.234.106:44847,sship:125.64.91.87:21111,supplier:xqvps,hostname:nn375726,pwd:avc2015
+ip:110.189.223.0:44847,sship:125.64.91.84:20361,supplier:xqvps,hostname:nn375730,pwd:avc2015
