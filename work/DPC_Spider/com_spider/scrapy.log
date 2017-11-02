@@ -1,0 +1,7 @@
+2017-09-27 11:52:27 [py.warnings] WARNING: D:\installPython2.7\lib\site-packages\scrapy\utils\deprecate.py:156: ScrapyDeprecationWarning: `scrapy.contrib.downloadermiddleware.useragent.UserAgentMiddleware` class is deprecated, use `scrapy.downloadermiddlewares.useragent.UserAgentMiddleware` instead
+  ScrapyDeprecationWarning)
+
+2017-09-27 11:52:27 [py.warnings] WARNING: D:\installPython2.7\lib\site-packages\scrapy\utils\deprecate.py:156: ScrapyDeprecationWarning: `scrapy.contrib.downloadermiddleware.httpproxy.HttpProxyMiddleware` class is deprecated, use `scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware` instead
+  ScrapyDeprecationWarning)
+
+2017-09-27 11:53:19 [scrapy] ERROR: Error downloading <GET https://club.jd.com/comment/skuProductPageComments.action?productId=11610704486&score=0&sortType=6&page=0&pageSize=10>: Could not open CONNECT tunnel with proxy 119.7.56.103:44847
