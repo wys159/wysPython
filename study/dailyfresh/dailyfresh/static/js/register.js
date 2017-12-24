@@ -48,11 +48,14 @@
 		}
 		else
 		{
+//		            $('#user_name').next().hide();
+//			        error_name = false;
 			 $.get('/user/register_exsit/?uname='+$('#user_name').val(),function (data) {//返回的数据
 				if(data.count>0)
 				{
-				    alert("12321");
+				    alert("1");
 					$('#user_name').next().html('用户名已存在');
+                    $('#user_name').next().show();
 					error_name=true;
 				}
 				else
@@ -60,7 +63,7 @@
 					$('#user_name').next().hide();
 			        error_name = false;
 				}
-			});s
+			});
 		}
 	}
 
@@ -112,7 +115,6 @@
 			$('#email').next().show();
 			error_check_password = true;
 		}
-
 	}
 
 
@@ -124,12 +126,12 @@
 
 		if(error_name == false && error_password == false && error_check_password == false && error_email == false && error_check == false)
 		{
-			alert("12321");
+             alert("2");
 		    return true;
 		}
 		else
 		{
-		    alert("12");
+             alert("3");
 			return false;
 		}
 
