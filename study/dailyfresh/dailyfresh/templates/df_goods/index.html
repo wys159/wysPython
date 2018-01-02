@@ -2,23 +2,23 @@
 {% block head %}
 <script type="text/javascript" src="/static/js/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="/static/js/slide.js"></script>
-    <script type="text/javascript" src="/static/js/slideshow.js"></script>
-	<script type="text/javascript">
-		BCSlideshow('focuspic');
-		var oFruit = document.getElementById('fruit_more');
-		var oShownum = document.getElementById('show_count');
+    <!--<script type="text/javascript" src="/static/js/slideshow.js"></script>-->
+	<!--<script type="text/javascript">-->
+		<!--BCSlideshow('focuspic');-->
+		<!--var oFruit = document.getElementById('fruit_more');-->
+		<!--var oShownum = document.getElementById('show_count');-->
 
-		var hasorder = localStorage.getItem('order_finish');
+		<!--var hasorder = localStorage.getItem('order_finish');-->
 
-		if(hasorder)
-		{
-			oShownum.innerHTML = '2';
-		}
+		<!--if(hasorder)-->
+		<!--{-->
+			<!--oShownum.innerHTML = '2';-->
+		<!--}-->
 
-		oFruit.onclick = function(){
-			window.location.href = 'list.html';
-		}
-	</script>
+		<!--oFruit.onclick = function(){-->
+			<!--window.location.href = 'list.html';-->
+		<!--}-->
+	<!--</script>-->
 {% endblock head %}
 {% block body_header %}
 	<div class="navbar_con">
@@ -27,9 +27,9 @@
 			<ul class="navlist fl">
 				<li><a href="/">首页</a></li>
 				<li class="interval">|</li>
-				<li><a href="">手机生鲜</a></li>
+				<li><a href="#">手机生鲜</a></li>
 				<li class="interval">|</li>
-				<li><a href="">抽奖</a></li>
+				<li><a href="#">抽奖</a></li>
 			</ul>
 		</div>
 	</div>
@@ -69,7 +69,7 @@
 				<a href="/{{g.id}}">{{g.gtitle|slice:'10'}}...</a>
 				 {% endfor %}
 			</div>
-			<a href="#" class="goods_more fr" id="fruit_more">查看更多 ></a>
+			<a href="\list1_1_1" class="goods_more fr" id="fruit_more">查看更多 ></a>
 		</div>
 
 		<div class="goods_con clearfix">
@@ -78,7 +78,7 @@
 				{% for g in type0 %}
 				<li>
 					<h4><a href="/{{g.id}}">{{g.gtitle|slice:'10'}}...</a></h4>
-					<a href="#"><img src="/static/{{g.gpic}}"></a>
+					<a href="/{{g.id}}"><img src="/static/{{g.gpic}}"></a>
 					<div class="prize">¥ {{g.gpric}}</div>
 				</li>
 				{% endfor %}
@@ -95,7 +95,7 @@
 				<a href="/{{g.id}}">{{g.gtitle|slice:'10'}}...</a>
 				 {% endfor %}
 			</div>
-			<a href="#" class="goods_more fr">查看更多 ></a>
+			<a href="\list2_1_1" class="goods_more fr">查看更多 ></a>
 		</div>
 
 		<div class="goods_con clearfix">
@@ -104,7 +104,7 @@
 				 {% for g in type1 %}
 				<li>
 					<h4><a href="/{{g.id}}">{{g.gtitle|slice:'10'}}...</a></h4>
-					<a href="#"><img src="/static/{{g.gpic}}"></a>
+					<a href="/{{g.id}}"><img src="/static/{{g.gpic}}"></a>
 					<div class="prize">¥ {{g.gpric}}</div>
 				</li>
 				{% endfor %}
@@ -121,7 +121,7 @@
 				<a href="/{{g.id}}">{{g.gtitle|slice:'10'}}...</a>
 				 {% endfor %}
 			</div>
-			<a href="#" class="goods_more fr">查看更多 ></a>
+			<a href="\list3_1_1" class="goods_more fr">查看更多 ></a>
 		</div>
 
 		<div class="goods_con clearfix">
@@ -130,7 +130,7 @@
 				 {% for g in type2 %}
 				<li>
 					<h4><a href="/{{g.id}}">{{g.gtitle|slice:'10'}}...</a></h4>
-					<a href="#"><img src="/static/{{g.gpic}}"></a>
+					<a href="/{{g.id}}"><img src="/static/{{g.gpic}}"></a>
 					<div class="prize">¥ {{g.gpric}}</div>
 				</li>
 				{% endfor %}
@@ -147,7 +147,7 @@
 				<a href="/{{g.id}}">{{g.gtitle|slice:'10'}}...</a>
 				 {% endfor %}
 			</div>
-			<a href="#" class="goods_more fr">查看更多 ></a>
+			<a href="\list4_1_1" class="goods_more fr">查看更多 ></a>
 		</div>
 
 		<div class="goods_con clearfix">
@@ -156,7 +156,7 @@
 				 {% for g in type3 %}
 				<li>
 					<h4><a href="/{{g.id}}">{{g.gtitle|slice:'10'}}...</a></h4>
-					<a href="#"><img src="/static/{{g.gpic}}"></a>
+					<a href="/{{g.id}}"><img src="/static/{{g.gpic}}"></a>
 					<div class="prize">¥ {{g.gpric}}</div>
 				</li>
 				{% endfor %}
@@ -173,7 +173,7 @@
 				<a href="/{{g.id}}">{{g.gtitle|slice:'10'}}...</a>
 				 {% endfor %}
 			</div>
-			<a href="#" class="goods_more fr">查看更多 ></a>
+			<a href="\list5_1_1" class="goods_more fr">查看更多 ></a>
 		</div>
 
 		<div class="goods_con clearfix">
@@ -182,7 +182,7 @@
 				 {% for g in type4 %}
 				<li>
 					<h4><a href="/{{g.id}}">{{g.gtitle|slice:'10'}}...</a></h4>
-					<a href="#"><img src="/static/{{g.gpic}}"></a>
+					<a href="/{{g.id}}"><img src="/static/{{g.gpic}}"></a>
 					<div class="prize">¥ {{g.gpric}}</div>
 				</li>
 				{% endfor %}
@@ -199,7 +199,7 @@
 				<a href="/{{g.id}}">{{g.gtitle|slice:'10'}}...</a>
 				 {% endfor %}
 			</div>
-			<a href="#" class="goods_more fr">查看更多 ></a>
+			<a href="\list6_1_1" class="goods_more fr">查看更多 ></a>
 		</div>
 
 		<div class="goods_con clearfix">
@@ -208,7 +208,7 @@
 				 {% for g in type5 %}
 				<li>
 					<h4><a href="/{{g.id}}">{{g.gtitle|slice:'10'}}...</a></h4>
-					<a href="#"><img src="/static/{{g.gpic}}"></a>
+					<a href="/{{g.id}}"><img src="/static/{{g.gpic}}"></a>
 					<div class="prize">¥ {{g.gpric}}</div>
 				</li>
 				{% endfor %}

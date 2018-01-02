@@ -126,12 +126,12 @@
 
 		if(error_name == false && error_password == false && error_check_password == false && error_email == false && error_check == false)
 		{
-
+             alert("2");
 		    return true;
 		}
 		else
 		{
-
+             alert("3");
 			return false;
 		}
 
