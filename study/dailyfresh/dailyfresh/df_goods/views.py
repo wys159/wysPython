@@ -1,8 +1,11 @@
 #_*_coding:utf-8_*_
-from django.shortcuts import render
+from django.shortcuts import render,render_to_response
+from django.template import RequestContext
+from django.http import HttpResponse,JsonResponse,HttpResponseRedirect
 from django.core.paginator import Paginator
 from models import *
 def index(request):
+
     typelist=TypeInfo.objects.all()
     #查询各分类取最新4条与最热4条
     type0=typelist[0].goodsinfo_set.order_by('-id')[0:4]
@@ -26,8 +29,19 @@ def index(request):
              'type4': type4, 'type41': type41,
              'type5': type5, 'type51': type51,
              }
-    print 'typ01'
-    return  render(request,'df_goods/index.html',context)
+    # 把当前访问的页面存入到cookies中以便以后用到
+    # response=render_to_response(request,'df_goods/index.html',context, context_instance = RequestContext(request))
+    # response.set_cookie('url',request.get_full_path())
+    # return response
+    # url = request.COOKIES.get('url')
+    #
+    # if request.get_full_path()!=url and request.get_full_path() is not None:
+    #     red=HttpResponseRedirect(url)
+    #     red.set_cookie('url',request.get_full_path())
+    # response= render(request,'df_goods/index.html',context)
+    # response.set_cookie('url',request.get_full_path())
+    # return  response
+    return render(request, 'df_goods/index.html', context)
 
 def list(request,tid,pindex,sort):
     #tid当前商品类型 ，pindex当前页码,sort按什么排序
@@ -65,7 +79,25 @@ def detail(request,id):
              'typeinfo':goods.gtype,
              'news':news,'id':id
              }
-    return render(request,'df_goods/detail.html',context)
+
+    response=render(request,'df_goods/detail.html',context)
+
+    #记录最近浏览，在用户中心显示
+    goods_ids=request.COOKIES.get('goods_ids','')
+    goods_id='%d'%goods.id
+    if goods_ids!='':#判断是否有浏览记录，如果有则继续判断
+        goods_ids1=goods_ids.split(',')#把cookies中的记录拆分成列表
+        if goods_ids1.count(goods_id)>=1:#若记录已存在，则删除
+            goods_ids1.remover(goods_id)
+        goods_ids1.insert(0,goods_id)#再把记录填加到第一个
+        if len(goods_ids1)>=6:#若超过6个则把最后一个删除
+            del goods_ids1[5]
+        goods_ids=','.join(goods_ids1)#拼接字符串
+    else:
+        goods_ids=goods_id
+    response.set_cookie('goods_ids',goods_ids)#写入到cookie中
+
+    return response
 
 def base(request):
     return render(request,'df_goods/base.html')

@@ -3,6 +3,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse,JsonResponse,HttpResponseRedirect
 from models import  *
 from hashlib import sha1
+from . import user_decorator
 def register(request):
     return render(request,'df_user/register.html')
 def register_handle(request):
@@ -58,7 +59,8 @@ def login_handle_old(request):
 		s1.update(upwd)
 		upwd3 = s1.hexdigest()
 		if upwd3==users[0].upwd:
-			red=HttpResponseRedirect('/user/info/')
+			url = request.COOKIES.get('url', '/')
+			red=HttpResponseRedirect(url)
 			#处理记住用户名:若记住则写到cookie中，否则删除
 			if jizhu!=0:
 				red.set_cookie('uname',uname)
@@ -86,39 +88,58 @@ def login_handle(request):
 	# 查询库中是否存在用户名，反回一个list 形如['用户名']
 	users = UserInfo.objects.filter(uname=uname)
 	# 判断：若用户名存在，则判断加密后的密码正确否，若正确则转到用户中心
+	url = '/'
 	if len(users) == 1:
 		s1 = sha1()
 		s1.update(upwd)
 		upwd3 = s1.hexdigest()
+		print request.COOKIES.get('url')
 		if upwd3 == users[0].upwd:
-			# red = HttpResponseRedirect('/user/info/')
+			url=request.COOKIES.get('url','/')
+			# red = HttpResponseRedirect(url)
 			# # 处理记住用户名:若记住则写到cookie中，否则删除
 			# if jizhu != 0:
-			# 	red.set_cookie('uname', uname)
+			# 	request.set_cookie('uname', uname)
 			# else:
-			# 	red.set_cookie('uname', '', max_age=-1)
+			# 	request.set_cookie('uname', '', max_age=-1)
 			# 把用户名和ID加到session中，以便后面常用
+
+
 			request.session['user_id'] = users[0].id
 			request.session['user_name'] = uname
-			context={'error_name': 0, 'error_pwd': 0,'jizhu':jizhu}
+			context={'error_name': 0, 'error_pwd': 0,'jizhu':jizhu,'url':url}
+			# return red
 		else:
-			context = { 'error_name': 0, 'error_pwd': 1,'jizhu':jizhu}
+			context = { 'error_name': 0, 'error_pwd': 1,'jizhu':jizhu,'url':url}
+			#return JsonResponse(context)
 	else:
-		context = { 'error_name': 1, 'error_pwd': 0,'jizhu':jizhu}
+		context = { 'error_name': 1, 'error_pwd': 0,'jizhu':jizhu,'url':url}
 	return JsonResponse(context)
 
+def logout(request):
+	request.session.flush()
+
+	return redirect('/')
+@user_decorator.login
 def info(request):
 	try:
+
 		user_email=UserInfo.objects.get(id=request.session['user_id']).uemail
-		print user_email
-		context={'title':'用户中心','page_name':1,'user_email':user_email,'user_name':request.session['user_name']}
+		goods_ids=request.COOKIES.get('goods_ids','')
+		goods_ids1=goods_ids.split(',')
+		goods_list=[]
+		for goods_id in goods_ids1:
+			goods_list.append(GoodsInfo.objects.get(id=int(goods_id)))
+		context={'title':'用户中心','page_name':1,'user_email':user_email,'user_name':request.session['user_name'],
+				 'goods_list':goods_list}
 		return render(request,'df_user/user_center_info.html',context)
 	except Exception,e:
 		return redirect('/user/login/')
-
+@user_decorator.login
 def order(request):
 	context={'title':'用户中心','page_name':1}
 	return render(request, 'df_user/user_center_order.html',context)
+@user_decorator.login
 def site(request):
 	#查到一个对像
 	user=UserInfo.objects.get(id=request.session['user_id'])
