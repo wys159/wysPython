@@ -4,6 +4,7 @@ from django.http import HttpResponse,JsonResponse,HttpResponseRedirect
 from models import  *
 from hashlib import sha1
 from . import user_decorator
+from df_goods.models import *
 def register(request):
     return render(request,'df_user/register.html')
 def register_handle(request):
@@ -123,7 +124,6 @@ def logout(request):
 @user_decorator.login
 def info(request):
 	try:
-
 		user_email=UserInfo.objects.get(id=request.session['user_id']).uemail
 		goods_ids=request.COOKIES.get('goods_ids','')
 		goods_ids1=goods_ids.split(',')

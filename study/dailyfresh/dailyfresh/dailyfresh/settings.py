@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'df_user',
     'df_goods',
+    'df_cart',
     'tinymce',
 )
 
@@ -83,8 +84,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'HOST':'localhost',
         'POST':'3306',
-        'USER':'wys',
-        'PASSWORD':'wys',
+        'USER':'root',
+        'PASSWORD':'root',
         'NAME':'tiantian',
 
     }
