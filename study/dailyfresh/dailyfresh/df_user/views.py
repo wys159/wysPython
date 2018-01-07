@@ -3,8 +3,10 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse,JsonResponse,HttpResponseRedirect
 from models import  *
 from hashlib import sha1
+from django.core.paginator import Paginator
 from . import user_decorator
 from df_goods.models import *
+from df_order.models import *
 def register(request):
     return render(request,'df_user/register.html')
 def register_handle(request):
@@ -128,16 +130,38 @@ def info(request):
 		goods_ids=request.COOKIES.get('goods_ids','')
 		goods_ids1=goods_ids.split(',')
 		goods_list=[]
-		for goods_id in goods_ids1:
-			goods_list.append(GoodsInfo.objects.get(id=int(goods_id)))
-		context={'title':'用户中心','page_name':1,'user_email':user_email,'user_name':request.session['user_name'],
-				 'goods_list':goods_list}
+
+		if goods_ids1[0]!='':
+			for goods_id in goods_ids1:
+				goods_list.append(GoodsInfo.objects.get(id=int(goods_id)))
+		context = {'title': '用户中心', 'page_name': 1, 'user_email': user_email,
+				   'user_name': request.session['user_name'],
+				   'goods_list': goods_list}
 		return render(request,'df_user/user_center_info.html',context)
 	except Exception,e:
 		return redirect('/user/login/')
 @user_decorator.login
-def order(request):
-	context={'title':'用户中心','page_name':1}
+def order(request,pindex):
+	#设置当前页的默认值
+	if pindex=='':
+		pindex='1'
+	#获取当前用户下所有的订单号
+	uid=request.session['user_id']
+
+	order=OrderInfo.objects.filter(user_id=uid)
+	#存放详单对像,因为在在订单表中有单号但在详单表中无商品，所以要判断一下
+	detaillist=[]
+	for orderid in order:
+	#创建详单对像并查询
+		detail=OrderDetailInfo.objects.filter(order_id=orderid.oid)
+		if len(detail)>0:
+			detaillist.append(detail)
+	# 分页总数
+	paginator = Paginator(detaillist, 2)
+	#当前页
+	page = paginator.page(int(pindex))
+	context={'title':'用户中心','page_name':1,'page':page,
+             'paginator':paginator,'detaillist':detaillist}
 	return render(request, 'df_user/user_center_order.html',context)
 @user_decorator.login
 def site(request):

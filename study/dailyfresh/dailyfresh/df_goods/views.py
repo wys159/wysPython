@@ -3,6 +3,7 @@ from django.shortcuts import render,render_to_response
 from django.template import RequestContext
 from django.http import HttpResponse,JsonResponse,HttpResponseRedirect
 from django.core.paginator import Paginator
+from df_cart.models import *
 from models import *
 def index(request):
 
@@ -20,7 +21,7 @@ def index(request):
     type41 = typelist[4].goodsinfo_set.order_by('-gclick')[0:4]
     type5 = typelist[5].goodsinfo_set.order_by('-id')[0:4]
     type51 = typelist[5].goodsinfo_set.order_by('-gclick')[0:4]
-
+    cartgc = goodscount(request)
     context={'title':'首页','page_cart':1,
              'type0':type0,'type01':type01,
              'type1': type1, 'type11': type11,
@@ -28,7 +29,10 @@ def index(request):
              'type3': type3, 'type31': type31,
              'type4': type4, 'type41': type41,
              'type5': type5, 'type51': type51,
+             'cartgc':cartgc
              }
+
+
     # 把当前访问的页面存入到cookies中以便以后用到
 
     response= render(request,'df_goods/index.html',context)
@@ -49,12 +53,14 @@ def list(request,tid,pindex,sort):
     #分页
     paginator=Paginator(goods_list,10)
     page=paginator.page(int(pindex))
+    cartgc = goodscount(request)
     context={'title':typeinfo.ttitle,'page_cart':1,
              'page':page,
              'paginator':paginator,
              'typeinfo':typeinfo,
              'sort':sort,
-             'news':news
+             'news':news,
+             'cartgc':cartgc,
              }
 
     return render(request,'df_goods/list.html',context)
@@ -66,11 +72,12 @@ def detail(request,id):
     goods.save()
     #最新的新品
     news=goods.gtype.goodsinfo_set.order_by('-id')[0:2]
-
+    cartgc = goodscount(request)
     context={'title':goods.gtype.ttitle,'page_cart':1,
              'goods':goods,
              'typeinfo':goods.gtype,
-             'news':news,'id':id
+             'news':news,'id':id,
+             'cartgc':cartgc
              }
 
     response=render(request,'df_goods/detail.html',context)
@@ -91,6 +98,13 @@ def detail(request,id):
     response.set_cookie('goods_ids',goods_ids)#写入到cookie中
 
     return response
+#判断用户登录后购物车内有多少商品
+def goodscount(request):
+    if request.session.has_key('user_id'):
+        count=CartInfo.objects.filter(user_id=int(request.session['user_id'])).count()
+    else:
+        count=0
+    return count
 
 def base(request):
     return render(request,'df_goods/base.html')
