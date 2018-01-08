@@ -1,4 +1,18 @@
 {% extends 'base_foot.html' %}
+	{% block head %}
+<script type="text/javascript" >
+ function sEvent(){
+ $('.input_btn').on('click',function(){
+   var text=$('.input_text').val();
+    window.location.href="/serach/?q="+text;
+ });    
+}
+ $(document).ready(function(){
+//搜索
+    sEvent()
+ })
+</script>
+{% endblock head %}
 {% block body %}
 	<div class="header_con">
 		<div class="header">
