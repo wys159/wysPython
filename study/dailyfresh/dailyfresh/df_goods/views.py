@@ -72,6 +72,7 @@ def detail(request,id):
     goods.save()
     #最新的新品
     news=goods.gtype.goodsinfo_set.order_by('-id')[0:2]
+    # 判断用户登录后购物车内有商品的方法
     cartgc = goodscount(request)
     context={'title':goods.gtype.ttitle,'page_cart':1,
              'goods':goods,
@@ -102,6 +103,8 @@ def detail(request,id):
 def goodscount(request):
     if request.session.has_key('user_id'):
         count=CartInfo.objects.filter(user_id=int(request.session['user_id'])).count()
+        #购物车内的商品数据放到session 中以便以后用
+        request.session['cartcount']=count
     else:
         count=0
     return count

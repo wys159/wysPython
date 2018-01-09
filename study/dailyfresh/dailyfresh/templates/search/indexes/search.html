@@ -1,0 +1,47 @@
+{% extends 'base_topandfoot.html'  %}
+
+{% block detail2%}
+		<div class="r_wrap fr clearfix">
+        {% if query %}
+			<ul class="goods_type_list clearfix">
+				{%for g in page.object_list%}
+
+				<li>
+					<a href="/{{g.object.id}}"><img src="/static/{{g.object.gpic}}"></a>
+					<h4><a href="/{{g.object.id}}/">{{g.object.gtitle}}</a></h4>
+					<div class="operate">
+						<span class="prize">￥{{g.object.gpric}}</span>
+						<span class="unit">{{g.object.gunit}}</span>
+						<a href="/cart/add/{{g.object.id}}_1/" class="add_goods" title="加入购物车"></a>
+					</div>
+				</li>
+                {% empty %}
+                    <p>啥也没找到</p>
+				{%endfor%}
+
+			</ul>
+             {% if page.has_previous or page.has_next %}
+			<div class="pagenation">
+                {% if page.has_previous %}
+				<a href="/search/{{typeinfo.id}}_{{page.previous_page_number}}_{{sort}}"><上一页</a>
+                {% endif %}
+
+                {% for pindex in paginator.page_range %}
+                {% if pindex == page.number %}
+				<a href="#" class="active">{{pindex}}</a>
+                {% else %}
+				<a href="/list{{typeinfo.id}}_{{pindex}}_{{sort}}">{{pindex}}</a>
+                {% endif%}
+                {% endfor %}
+
+
+                {% if page.has_next %}
+				<a href="/list{{typeinfo.id}}_{{page.next_page_number}}_{{sort}}">下一页></a>
+                {% endif %}
+
+			</div>
+                 {% endif %}
+        {% endif %}
+		</div>
+	<!--</div>-->
+{% endblock detail2%}
