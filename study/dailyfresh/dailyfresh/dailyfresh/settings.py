@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'df_cart',
     'df_order',
     'tinymce',
+    'haystack',#全文检索的应用
 )
 
 MIDDLEWARE_CLASSES = (
@@ -85,8 +86,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'HOST':'localhost',
         'POST':'3306',
-        'USER':'root',
-        'PASSWORD':'root',
+        'USER':'wys',
+        'PASSWORD':'wys',
         'NAME':'tiantian',
 
     }
@@ -98,7 +99,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'zh-Hans'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
@@ -124,3 +125,19 @@ TINYMCE_DEFAULT_CONFIG = {
     'width': 600,
     'height': 400,
 }
+
+#搜索引擎
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        #使用Whoosh引擎
+        'ENGINE': 'haystack.backends.whoosh_cn_backend.WhooshEngine',
+        #索引文件路径
+        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+    }
+}
+
+#当添加、修改、删除数据时，自动生成索引
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+HAYSTACK_DEFAULT_OPERATOR='OR'
+#每页显示多少个数
+HAYSTACK_SEARCH_RESULTS_PER_PAGE=18

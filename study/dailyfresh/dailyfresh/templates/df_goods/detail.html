@@ -56,7 +56,7 @@
 			</div>
 			<div class="total">总价：<em id="gtotal">{{goods.gpric}}元</em></div>
 			<div class="operate_btn">
-				<a href="javascript:;" class="buy_btn">立即购买</a>
+				<a href="javascript:;" class="buy_btn" id="buy_btn">立即购买</a>
 				<a href="javascript:;" class="add_cart" id="add_cart">加入购物车</a>				
 			</div>
 		</div>
@@ -113,7 +113,12 @@
                 $('#show_count').text(data.count);
 
             });
-		})
+		});
+		//立即购买
+		$('#buy_btn').click(function(){
+		    var num1=parseInt($('.num_show').val());
+		    window.location.href='/cart/add/{{goods.id}}_'+num1
+        });
 	</script>
 
 {%endblock detail2%}

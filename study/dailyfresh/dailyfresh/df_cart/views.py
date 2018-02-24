@@ -37,6 +37,7 @@ def add(request,gid,gcount):# gid 为商品的ID gcount 为购买商品的数量
 	return  redirect('/cart/')
 
 #在购物车页面内编辑数量
+@user_decorator.login
 def edit(request,gid,gcount):
 	gid = int(gid)
 	gcount = int(gcount)
@@ -51,6 +52,7 @@ def edit(request,gid,gcount):
 		data={'ok':int(carts.count)}
 	return JsonResponse(data)
 #删除购物车内的商品
+@user_decorator.login
 def cdel(request,gid):
 	uid = request.session['user_id']
 	gid = int(gid)

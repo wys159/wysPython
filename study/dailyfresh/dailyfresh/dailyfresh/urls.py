@@ -1,3 +1,4 @@
+#_*_coding:utf-8_*_
 """dailyfresh URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -23,4 +24,5 @@ urlpatterns = [
     url(r'^cart/',include('df_cart.urls')),
     url(r'^order/',include('df_order.urls')),
     url(r'^tinymce/', include('tinymce.urls')),
+    url(r'^search/', include('haystack.urls')),#全文检索的url
 ]
